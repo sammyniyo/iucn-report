@@ -5,7 +5,7 @@ import { FaWpforms } from "react-icons/fa";
 import { HiCursorClick } from "react-icons/hi";
 import { LuView } from "react-icons/lu";
 import { TbArrowBounce } from "react-icons/tb";
-import { StatsCard } from "../../page";
+import { StatsCard } from "../../admin/page";
 import { ElementsType, FormElementInstance } from "@/components/FormElements";
 import {
   Table,
