@@ -8,22 +8,43 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
+model Organization {
+  id        String           @id @default(uuid())
+  name      String           @unique
+  createdAt DateTime         @default(now())
+  users     User[]
+  forms     FormAssignment[]
+}
+
+model User {
+  id             String       @id @default(uuid())
+  email          String       @unique
+  password       String
+  role           String       @default("organization")
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  organizationId String       @default("") // Ensure every user belongs to an organization
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade) // Ensure all users are deleted if org is deleted
+
+  forms Form[]
+}
+
 model Form {
   id          Int      @id @default(autoincrement())
-  userId      String
+  userId      String // Keep required field
   createdAt   DateTime @default(now())
   published   Boolean  @default(false)
   name        String
   description String   @default("")
   content     String   @default("[]")
+  visits      Int      @default(0)
+  submissions Int      @default(0)
+  shareURL    String   @unique @default(uuid())
 
-  visits      Int @default(0)
-  submissions Int @default(0)
+  FormSubmissions FormSubmissions[] @relation("FormToSubmissions") // Remove onDelete here
+  user            User              @relation(fields: [userId], references: [id]) // No onDelete
 
-  shareURL        String            @unique @default(uuid())
-  FormSubmissions FormSubmissions[] @relation("FormToSubmissions")
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  FormAssignments FormAssignment[] @relation("FormToAssignments")
 
   @@unique([name, userId])
 }
@@ -32,16 +53,17 @@ model FormSubmissions {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   formId    Int
-  form      Form     @relation("FormToSubmissions", fields: [formId], references: [id], onDelete: Cascade)
   content   String
+
+  form Form @relation("FormToSubmissions", fields: [formId], references: [id], onDelete: Cascade) // Move it here
 }
 
-model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  password  String
-  role      String   @default("organization")
-  createdAt DateTime @default(now())
+model FormAssignment {
+  id             String   @id @default(uuid())
+  formId         Int
+  organizationId String
+  assignedAt     DateTime @default(now())
 
-  forms Form[]
+  form         Form         @relation("FormToAssignments", fields: [formId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 }

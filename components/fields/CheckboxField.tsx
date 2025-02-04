@@ -57,7 +57,7 @@ export const CheckboxFieldFormElement: FormElement = {
 
   validate: (
     formElement: FormElementInstance,
-    currentValue: string
+    currentValue: string,
   ): boolean => {
     const element = formElement as CustomInstance;
     return !(element.extraAttributes.required && currentValue !== "true");
@@ -68,7 +68,11 @@ type CustomInstance = FormElementInstance & {
   extraAttributes: typeof extraAttributes;
 };
 
-function DesignerComponent({ elementInstance }: { elementInstance: FormElementInstance }) {
+function DesignerComponent({
+  elementInstance,
+}: {
+  elementInstance: FormElementInstance;
+}) {
   const element = elementInstance as CustomInstance;
   const { label, required, helperText } = element.extraAttributes;
   const id = `checkbox-${element.id}`;
@@ -76,8 +80,13 @@ function DesignerComponent({ elementInstance }: { elementInstance: FormElementIn
     <div className="flex items-start space-x-2">
       <Checkbox id={id} />
       <div className="grid gap-1.5 leading-none">
-        <Label>{label}{required && " *"}</Label>
-        {helperText && <p className="text-muted-foreground text-sm">{helperText}</p>}
+        <Label>
+          {label}
+          {required && " *"}
+        </Label>
+        {helperText && (
+          <p className="text-muted-foreground text-sm">{helperText}</p>
+        )}
       </div>
     </div>
   );
@@ -116,23 +125,40 @@ function FormComponent({
           setValue(newValue);
           if (!submitValue) return;
           const stringValue = newValue ? "true" : "false";
-          const valid = CheckboxFieldFormElement.validate(elementInstance, stringValue);
+          const valid = CheckboxFieldFormElement.validate(
+            elementInstance,
+            stringValue,
+          );
           setError(!valid);
           submitValue(element.id, stringValue);
         }}
       />
       <div className="grid gap-1.5 leading-none">
         <Label htmlFor={id} className={cn(error && "text-red-500")}>
-          {label}{required && " *"}
+          {label}
+          {required && " *"}
         </Label>
-        {helperText && <p className={cn("text-muted-foreground text-sm", error && "text-red-500")}>{helperText}</p>}
+        {helperText && (
+          <p
+            className={cn(
+              "text-muted-foreground text-sm",
+              error && "text-red-500",
+            )}
+          >
+            {helperText}
+          </p>
+        )}
       </div>
     </div>
   );
 }
 
 type PropertiesFormSchemaType = z.infer<typeof propertiesSchema>;
-function PropertiesComponent({ elementInstance }: { elementInstance: FormElementInstance }) {
+function PropertiesComponent({
+  elementInstance,
+}: {
+  elementInstance: FormElementInstance;
+}) {
   const element = elementInstance as CustomInstance;
   const { updateElement } = useDesigner();
   const form = useForm<PropertiesFormSchemaType>({
@@ -151,7 +177,11 @@ function PropertiesComponent({ elementInstance }: { elementInstance: FormElement
 
   return (
     <Form {...form}>
-      <form onBlur={form.handleSubmit(applyChanges)} className="space-y-3" onSubmit={(e) => e.preventDefault()}>
+      <form
+        onBlur={form.handleSubmit(applyChanges)}
+        className="space-y-3"
+        onSubmit={(e) => e.preventDefault()}
+      >
         <FormField
           control={form.control}
           name="label"
@@ -159,9 +189,14 @@ function PropertiesComponent({ elementInstance }: { elementInstance: FormElement
             <FormItem>
               <FormLabel>Label</FormLabel>
               <FormControl>
-                <Input {...field} onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()} />
+                <Input
+                  {...field}
+                  onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
+                />
               </FormControl>
-              <FormDescription>This is the label for the checkbox field.</FormDescription>
+              <FormDescription>
+                This is the label for the checkbox field.
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -173,7 +208,10 @@ function PropertiesComponent({ elementInstance }: { elementInstance: FormElement
             <FormItem>
               <FormLabel>Helper Text</FormLabel>
               <FormControl>
-                <Input {...field} onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()} />
+                <Input
+                  {...field}
+                  onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
+                />
               </FormControl>
               <FormDescription>Displayed below the field.</FormDescription>
               <FormMessage />
@@ -190,7 +228,10 @@ function PropertiesComponent({ elementInstance }: { elementInstance: FormElement
                 <FormDescription>Make this field required.</FormDescription>
               </div>
               <FormControl>
-                <Switch checked={field.value} onCheckedChange={field.onChange} />
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

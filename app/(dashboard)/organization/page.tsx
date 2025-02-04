@@ -1,5 +1,7 @@
-const Organization = () => {
-  return <div className="">Organization</div>;
-};
+import React from "react";
 
-export default Organization;
+function page() {
+  return <div>page</div>;
+}
+
+export default page;

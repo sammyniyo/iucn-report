@@ -1,9 +1,7 @@
 import Image from "next/image";
+import UserMenu from "./Profile";
 const Navbar = () => {
   return (
-
-
-
     <div className="flex justify-between items-center p-4 bg-gray-100 shadow-md">
       {/* Search Bar */}
       <div className="hidden md:flex items-center gap-2 rounded-full ring-2 ring-gray-300 px-3 py-1 bg-white">
@@ -37,7 +35,7 @@ const Navbar = () => {
         {/* User Info */}
         <div className="flex flex-col text-right">
           <header>
-            
+            <UserMenu />
           </header>
         </div>
       </div>

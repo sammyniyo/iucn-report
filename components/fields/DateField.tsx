@@ -60,7 +60,10 @@ export const DateFieldFormElement: FormElement = {
   formComponent: FormComponent,
   propertiesComponent: PropertiesComponent,
 
-  validate: (formElement: FormElementInstance, currentValue: string): boolean => {
+  validate: (
+    formElement: FormElementInstance,
+    currentValue: string,
+  ): boolean => {
     const element = formElement as CustomInstance;
     return element.extraAttributes.required ? currentValue.length > 0 : true;
   },
@@ -70,21 +73,30 @@ type CustomInstance = FormElementInstance & {
   extraAttributes: typeof extraAttributes;
 };
 
-function DesignerComponent({ elementInstance }: { elementInstance: FormElementInstance }) {
+function DesignerComponent({
+  elementInstance,
+}: {
+  elementInstance: FormElementInstance;
+}) {
   const element = elementInstance as CustomInstance;
   const { label, required, helperText } = element.extraAttributes;
-  
+
   return (
     <div className="flex flex-col gap-2 w-full">
       <Label>
         {label}
         {required && "*"}
       </Label>
-      <Button variant="outline" className="w-full justify-start text-left font-normal">
+      <Button
+        variant="outline"
+        className="w-full justify-start text-left font-normal"
+      >
         <CalendarIcon className="mr-2 h-4 w-4" />
         <span>Pick a Date</span>
       </Button>
-      {helperText && <p className="text-muted-foreground text-sm">{helperText}</p>}
+      {helperText && (
+        <p className="text-muted-foreground text-sm">{helperText}</p>
+      )}
     </div>
   );
 }
@@ -102,7 +114,7 @@ function FormComponent({
 }) {
   const element = elementInstance as CustomInstance;
   const [date, setDate] = useState<Date | undefined>(
-    defaultValue ? new Date(defaultValue) : undefined
+    defaultValue ? new Date(defaultValue) : undefined,
   );
   const [error, setError] = useState(isInvalid ?? false);
 
@@ -134,7 +146,7 @@ function FormComponent({
             className={cn(
               "w-full justify-start text-left font-normal",
               !date && "text-muted-foreground",
-              error && "border-red-500"
+              error && "border-red-500",
             )}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
@@ -142,11 +154,21 @@ function FormComponent({
           </Button>
         </PopoverTrigger>
         <PopoverContent>
-          <Calendar mode="single" selected={date} onSelect={handleDateSelect} initialFocus />
+          <Calendar
+            mode="single"
+            selected={date}
+            onSelect={handleDateSelect}
+            initialFocus
+          />
         </PopoverContent>
       </Popover>
       {helperText && (
-        <p className={cn("text-muted-foreground text-sm", error && "text-red-500")}>
+        <p
+          className={cn(
+            "text-muted-foreground text-sm",
+            error && "text-red-500",
+          )}
+        >
           {helperText}
         </p>
       )}
@@ -156,7 +178,11 @@ function FormComponent({
 
 type PropertiesFormSchemaType = z.infer<typeof propertiesSchema>;
 
-function PropertiesComponent({ elementInstance }: { elementInstance: FormElementInstance }) {
+function PropertiesComponent({
+  elementInstance,
+}: {
+  elementInstance: FormElementInstance;
+}) {
   const element = elementInstance as CustomInstance;
   const { updateElement } = useDesigner();
 
@@ -192,9 +218,14 @@ function PropertiesComponent({ elementInstance }: { elementInstance: FormElement
             <FormItem>
               <FormLabel>Label</FormLabel>
               <FormControl>
-                <Input {...field} onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()} />
+                <Input
+                  {...field}
+                  onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
+                />
               </FormControl>
-              <FormDescription>This is the label for the date field.</FormDescription>
+              <FormDescription>
+                This is the label for the date field.
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -206,9 +237,14 @@ function PropertiesComponent({ elementInstance }: { elementInstance: FormElement
             <FormItem>
               <FormLabel>Helper Text</FormLabel>
               <FormControl>
-                <Input {...field} onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()} />
+                <Input
+                  {...field}
+                  onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
+                />
               </FormControl>
-              <FormDescription>This text will be displayed below the field.</FormDescription>
+              <FormDescription>
+                This text will be displayed below the field.
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -223,7 +259,10 @@ function PropertiesComponent({ elementInstance }: { elementInstance: FormElement
                 <FormDescription>Make this field mandatory.</FormDescription>
               </div>
               <FormControl>
-                <Switch checked={field.value} onCheckedChange={field.onChange} />
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

@@ -22,7 +22,7 @@ export type ElementsType =
   | "TextAreaField"
   | "DateField"
   | "SelectField"
-  | "CheckboxField"
+  | "CheckboxField";
 
 export type SubmitFunction = (key: string, value: string) => void;
 

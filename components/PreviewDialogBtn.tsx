@@ -1,13 +1,8 @@
-
 import React from "react";
 import { Button } from "./ui/button";
 import { MdPreview } from "react-icons/md";
 import useDesigner from "./hooks/useDesigner";
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-} from "@/components/ui/dialog"; 
+import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
 import { FormElements } from "./FormElements";
 
 function PreviewDialogBtn() {
@@ -24,7 +19,9 @@ function PreviewDialogBtn() {
       <DialogContent className="w-screen h-screen max-h-screen max-w-full flex flex-col flex-grow p-0 gap-0">
         {/* Header */}
         <div className="px-4 py-2 border-b">
-          <p className="text-lg font-bold text-muted-foreground">Form Preview</p>
+          <p className="text-lg font-bold text-muted-foreground">
+            Form Preview
+          </p>
           <p className="text-sm text-muted-foreground">
             This is how your form will look like to the organizations.
           </p>
@@ -37,7 +34,9 @@ function PreviewDialogBtn() {
               elements.map((element) => {
                 const FormComponent = FormElements[element.type]?.formComponent;
                 if (!FormComponent) return null;
-                return <FormComponent key={element.id} elementInstance={element} />;
+                return (
+                  <FormComponent key={element.id} elementInstance={element} />
+                );
               })
             ) : (
               <p className="text-center text-gray-600 dark:text-gray-400">

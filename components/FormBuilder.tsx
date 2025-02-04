@@ -22,7 +22,7 @@ import { BsArrowRight, BsArrowLeft } from "react-icons/bs";
 import Link from "next/link";
 
 function FormBuilder({ form }: { form: Form }) {
-  const { setElements , setSelectedElement} = useDesigner();
+  const { setElements, setSelectedElement } = useDesigner();
   const [isReady, setIsReady] = useState(false);
   const mouseSensor = useSensor(MouseSensor, {
     activationConstraint: {
