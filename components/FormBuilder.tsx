@@ -24,6 +24,8 @@ import Link from "next/link";
 function FormBuilder({ form }: { form: Form }) {
   const { setElements, setSelectedElement } = useDesigner();
   const [isReady, setIsReady] = useState(false);
+  const [shareUrl, setShareUrl] = useState("");
+
   const mouseSensor = useSensor(MouseSensor, {
     activationConstraint: {
       distance: 10,
@@ -33,7 +35,7 @@ function FormBuilder({ form }: { form: Form }) {
   const touchSensor = useSensor(TouchSensor, {
     activationConstraint: {
       delay: 300,
-      torelance: 5,
+      tolerance: 5,
     },
   });
 
@@ -48,6 +50,12 @@ function FormBuilder({ form }: { form: Form }) {
     return () => clearTimeout(readyTimeOut);
   }, [form, isReady, setElements, setSelectedElement]);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setShareUrl(`${window.location.origin}/submit/${form.shareURL}`);
+    }
+  }, [form.shareURL]);
+
   if (!isReady) {
     return (
       <div className="flex flex-col items-center justify-center w-full h-full">
@@ -55,8 +63,6 @@ function FormBuilder({ form }: { form: Form }) {
       </div>
     );
   }
-
-  const shareUrl = `${window.location.origin}/submit/${form.shareURL}`;
 
   if (form.published) {
     return (
@@ -105,6 +111,7 @@ function FormBuilder({ form }: { form: Form }) {
       </>
     );
   }
+
   return (
     <DndContext sensors={sensors}>
       <main className="flex flex-col w-full">

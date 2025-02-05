@@ -50,12 +50,14 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@next/eslint-plugin-next": "^15.1.6",
     "@types/bcrypt": "^5.0.2",
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9.19.0",
+    "eslint-config-next": "^15.1.6",
     "postcss": "^8",
     "prettier": "3.4.2",
     "prisma": "^6.3.0",

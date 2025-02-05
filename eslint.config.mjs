@@ -1,4 +1,14 @@
-import config from "eslint-config-standard";
+import nextjs from "@next/eslint-plugin-next";
 
-/** @type {import('eslint').Linter.Config[]} */
-export default [...[].concat(config)];
+export default [
+  {
+    files: ["**/*.{js,jsx,ts,tsx}"],
+    plugins: {
+      "@next/next": nextjs,
+    },
+    rules: {
+      "react/react-in-jsx-scope": "off",
+    },
+  },
+  ...nextjs.configs.recommended,
+];

@@ -13,6 +13,7 @@ export const metadata: Metadata = {
   description: "IUCN TREPA IMS | Reporting System",
 };
 
+
 export default function RootLayout({
   children,
 }: {
