@@ -21,8 +21,8 @@ export async function GetFormStats() {
     return {
       visits: stats._sum.visits ?? 0,
       submissions: stats._sum.submissions ?? 0,
-      submissionRate: stats._sum.visits ? (stats._sum.submissions / stats._sum.visits) * 100 : 0,
-      bounceRate: stats._sum.visits ? 100 - (stats._sum.submissions / stats._sum.visits) * 100 : 100,
+      submissionRate: stats._sum.visits ? ((stats._sum.submissions ?? 0) / stats._sum.visits) * 100 : 0,
+      bounceRate: stats._sum.visits ? 100 - ((stats._sum.submissions ?? 0) / stats._sum.visits) * 100 : 100,
     };
   } catch (error) {
     console.error("Error fetching form stats:", error);
@@ -75,7 +75,7 @@ export async function GetForms() {
   });
 }
 
-export async function GetFormById(id: number) {
+export async function GetFormById(id: String) {
   const user = await getCurrentUser();
   if (!user || !user.id) {
     throw new UserNotFoundErr();
@@ -83,10 +83,10 @@ export async function GetFormById(id: number) {
 
   return await prisma.form.findUnique({
     where: {
-      id,
       userId: user.id,
-    },
-  });
+      id: Number(id),
+    }
+  })
 }
 
 export async function UpdateFormContent(id: number, jsonContent: string) {

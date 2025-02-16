@@ -1,22 +1,22 @@
-// app/(dashboard)/builder/[id]/page.tsx
 import { GetFormById } from "@/actions/form";
 import FormBuilder from "@/components/FormBuilder";
+import React from "react";
 
-interface PageProps {
+// Outer component: Fetches the form data and passes it to the inner component
+async function BuilderPage({
+  params,
+}: {
   params: {
-    id: string;
+    id: number;
   };
-}
-
-async function BuilderPage({ params }: PageProps) {
+}) {
   const { id } = params;
-  const form = await GetFormById(Number(id));
-
+  const form = await GetFormById(String(id));
   if (!form) {
     throw new Error("Form not found");
   }
 
-  console.log("Page Params:", params);
+  // Pass the form data to the inner component
   return <FormBuilder form={form} />;
 }
 
